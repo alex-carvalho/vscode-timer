@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <style>
+      body { padding: 20px; font-family: sans-serif; }
+      .form-group { margin-bottom: 15px; }
+      label { display: block; margin-bottom: 5px; }
+      input, select { width: 100%; padding: 5px; }
+      button { padding: 8px 16px; background: #007acc; color: white; border: none; cursor: pointer; }
+      .hidden { display: none; }
+   </style>
+</head>
+<body>
+   <h2>Configure Timer</h2>
+   <div class="form-group">
+      <label for="value">Duration:</label>
+      <input type="number" id="value" min="1" value="10">
+   </div>
+   <div class="form-group">
+      <label for="unit">Unit:</label>
+      <select id="unit">
+         <option value="seconds">Seconds</option>
+         <option value="minutes">Minutes</option>
+      </select>
+   </div>
+   <div class="form-group">
+      <label>
+         <input type="checkbox" id="recurring"> Enable recurring timer
+      </label>
+   </div>
+   <div id="recurringOptions" class="hidden">
+      <div class="form-group">
+         <label for="recurringValue">Interval between timers:</label>
+         <input type="number" id="recurringValue" min="1" value="5">
+      </div>
+      <div class="form-group">
+         <label for="recurringUnit">Unit:</label>
+         <select id="recurringUnit">
+            <option value="seconds">Seconds</option>
+            <option value="minutes">Minutes</option>
+         </select>
+      </div>
+   </div>
+   <button id="startBtn">Start Timer</button>
+   <script>
+      const vscode = acquireVsCodeApi();
+      const recurringCheckbox = document.getElementById('recurring');
+      const recurringOptions = document.getElementById('recurringOptions');
+      
+      recurringCheckbox.addEventListener('change', () => {
+         if (recurringCheckbox.checked) {
+            recurringOptions.classList.remove('hidden');
+         } else {
+            recurringOptions.classList.add('hidden');
+         }
+      });
+      
+      document.getElementById('startBtn').addEventListener('click', () => {
+         const value = document.getElementById('value').value;
+         const unit = document.getElementById('unit').value;
+         const isRecurring = recurringCheckbox.checked;
+         
+         let recurringValue, recurringUnit;
+         if (isRecurring) {
+            recurringValue = document.getElementById('recurringValue').value;
+            recurringUnit = document.getElementById('recurringUnit').value;
+         }
+         
+         if (value && !isNaN(value) && Number(value) > 0) {
+            vscode.postMessage({ 
+               value: Number(value), 
+               unit,
+               isRecurring,
+               recurringValue: recurringValue ? Number(recurringValue) : undefined,
+               recurringUnit
+            });
+         }
+      });
+   </script>
+</body>
+</html>
