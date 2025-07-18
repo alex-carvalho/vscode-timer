@@ -21,11 +21,14 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 	context.subscriptions.push(setTimerCommand);
 
-	const stopTimerCommand = vscode.commands.registerCommand('timer.stopTimer', () => timer.stopTimer());
-	context.subscriptions.push(stopTimerCommand);
+	const pauseTimerCommand = vscode.commands.registerCommand('timer.pauseTimer', () => timer.pauseTimer());
+	context.subscriptions.push(pauseTimerCommand);
 
 	const startTimerCommand = vscode.commands.registerCommand('timer.startTimer', () => timer.startTimer());
 	context.subscriptions.push(startTimerCommand);
+
+	const stopTimerCommand = vscode.commands.registerCommand('timer.stopTimer', () => timer.stopTimer());
+	context.subscriptions.push(stopTimerCommand);
 }
 
 export function deactivate() {}
