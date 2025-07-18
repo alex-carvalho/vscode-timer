@@ -5,33 +5,27 @@ export function activate(context: vscode.ExtensionContext) {
 	const timer = new Timer(context);
 
 	const setTimerCommand = vscode.commands.registerCommand('timer.setTimer', async () => {
-		
-		const panel = vscode.window.createWebviewPanel(
-			'timerConfig',
-			'Timer Configuration',
-			vscode.ViewColumn.One,
-			{ enableScripts: true }
-		);
-
-		const fs = require('fs');
-		const path = require('path');
-		const htmlPath = path.join(context.extensionPath, 'src', 'timerConfig.html');
-		panel.webview.html = fs.readFileSync(htmlPath, 'utf8');
-
-		panel.webview.onDidReceiveMessage(
-			message => {
-				const { value, unit, isRecurring, recurringValue, recurringUnit } = message;
-				panel.dispose();
-				timer.setTimer(value, unit, isRecurring, recurringValue, recurringUnit);
+		const value = await vscode.window.showInputBox({
+			prompt: 'Enter timer duration in seconds',
+			validateInput: (input) => {
+				const n = Number(input);
+				if (isNaN(n) || n <= 0) {
+					return 'Please enter a positive number';
+				}
+				return null;
 			}
-		);
+		});
+		if (value) {
+			timer.setTimer(Number(value));
+		}
 	});
 	context.subscriptions.push(setTimerCommand);
 
-	const stopTimerCommand = vscode.commands.registerCommand('timer.stopTimer', () => {
-		timer.stopTimer();
-	});
+	const stopTimerCommand = vscode.commands.registerCommand('timer.stopTimer', () => timer.stopTimer());
 	context.subscriptions.push(stopTimerCommand);
+
+	const startTimerCommand = vscode.commands.registerCommand('timer.startTimer', () => timer.startTimer());
+	context.subscriptions.push(startTimerCommand);
 }
 
 export function deactivate() {}

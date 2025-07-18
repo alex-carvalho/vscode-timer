@@ -16,10 +16,6 @@
       {
         "command": "timer.setTimer",
         "title": "Configure Timer"
-      },
-      {
-        "command": "timer.stopTimer",
-        "title": "Stop Timer"
       }
     ]
   },
