@@ -1,7 +1,9 @@
 import * as vscode from 'vscode';
 
+import { Timer } from './Timer';
+
 export function activate(context: vscode.ExtensionContext) {
-	const { Timer } = require('./Timer');
+	
 	const timer = new Timer(context);
 
 	const setTimerCommand = vscode.commands.registerCommand('timer.setTimer', async () => {

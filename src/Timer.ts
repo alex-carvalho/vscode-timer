@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 
+import { showNotification, showNotificationWithSound } from './Notification';
 
 export class Timer {
     private timerInterval: NodeJS.Timeout | undefined;
@@ -57,11 +58,8 @@ export class Timer {
                 this.remainingSeconds--;
                 this.updateTimerDisplay();
             } else {
-                clearInterval(this.timerInterval!);
-                this.isRunning = false;
-                this.remainingSeconds = this.timerTime;
-                this.updateTimerDisplay();
-                vscode.window.showInformationMessage('Timer finished!');
+                this.stopTimer();
+                showNotificationWithSound('Timer finished!');
             }
         }, 1000);
     }
@@ -79,18 +77,20 @@ export class Timer {
         }
         this.isRunning = false;
         this.updateTimerDisplay();
-        vscode.window.showInformationMessage('Timer paused');
+        showNotification('Timer paused');
     }
 
     public stopTimer() {
-        if (this.timerInterval) {
-            clearInterval(this.timerInterval);
-            this.timerInterval = undefined;
-        }
+        this.stopTimerCountDown();
+        showNotification('Timer reset');
+    }
+
+    private stopTimerCountDown() {
+        clearInterval(this.timerInterval);
+        this.timerInterval = undefined;
         this.isRunning = false;
         this.remainingSeconds = this.timerTime;
         this.updateTimerDisplay();
-        vscode.window.showInformationMessage('Timer reset');
     }
 
     private updateTimerDisplay() {
@@ -106,6 +106,8 @@ export class Timer {
             
             if(this.remainingSeconds !== this.timerTime) {
                 this.stopTimerStatusBarItem.show();
+            } else {
+                this.stopTimerStatusBarItem.hide();
             }
 
             if (this.remainingSeconds > 0) {    
