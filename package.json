@@ -3,6 +3,8 @@
   "name": "timer",
   "displayName": "timer",
   "description": "Simple timer extension for VS Code",
+  "icon": "images/icon.png",
+  "publisher": "alex-carvalho",
   "repository": {
     "type": "git",
     "url": "https://github.com/alex-carvalho/vscode-timer"
