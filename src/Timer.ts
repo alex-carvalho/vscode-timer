@@ -20,7 +20,7 @@ export class Timer {
         this.timerStatusBarItem.show();
         context.subscriptions.push(this.timerStatusBarItem);
 
-          this.stopTimerStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 99);
+        this.stopTimerStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 99);
         this.stopTimerStatusBarItem.text = '$(debug-stop)';
         this.stopTimerStatusBarItem.tooltip = 'Stop timer';
         this.stopTimerStatusBarItem.command = 'timer.stopTimer';
@@ -58,7 +58,7 @@ export class Timer {
                 this.remainingSeconds--;
                 this.updateTimerDisplay();
             } else {
-                this.stopTimer();
+                this.stopTimerCountDown();
                 showNotificationWithSound('Timer finished!');
             }
         }, 1000);

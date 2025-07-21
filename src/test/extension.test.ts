@@ -1,15 +1,16 @@
 import * as assert from 'assert';
-
-// You can import and use all API from the 'vscode' module
-// as well as import your extension to test it
+import * as sinon from 'sinon';
 import * as vscode from 'vscode';
-// import * as myExtension from '../../extension';
 
-suite('Extension Test Suite', () => {
-	vscode.window.showInformationMessage('Start all tests.');
-
-	test('Sample test', () => {
-		assert.strictEqual(-1, [1, 2, 3].indexOf(5));
-		assert.strictEqual(-1, [1, 2, 3].indexOf(0));
+suite('Extension Activation', () => {
+	test('activate registers commands', async () => {
+		const contextStub: any = { subscriptions: [] };
+		const registerCommandStub = sinon.stub(vscode.commands, 'registerCommand').callsFake((id: string, cb: (...args: any[]) => any) => {
+			return { dispose: () => {} };
+		});
+		const { activate } = await import('../extension.js');
+		activate(contextStub);
+		assert.strictEqual(registerCommandStub.callCount, 4);
+		registerCommandStub.restore();
 	});
 });
