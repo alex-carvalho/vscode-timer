@@ -1,7 +1,7 @@
 {
   "private": true,
-  "name": "timer",
-  "displayName": "timer",
+  "name": "tiny-timer",
+  "displayName": "Tiny Timer",
   "description": "Simple timer extension for VS Code",
   "icon": "images/icon.png",
   "publisher": "alex-carvalho",
@@ -24,7 +24,19 @@
         "command": "timer.setTimer",
         "title": "Configure Timer"
       }
-    ]
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "Tiny Timer configuration",
+      "properties": {
+        "timer.unit": {
+          "type": "string",
+          "enum": ["seconds", "minutes"],
+          "default": "seconds",
+          "description": "Unit for timer duration input."
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "yarn run package",
